@@ -51,15 +51,6 @@ void Parser::ConsumeAllInput()
         token = lexer.peek(i);
         token.Print();
     }
-   
-    token = lexer.GetToken();
-    token.Print();
-    while (token.token_type != END_OF_FILE)
-    {
-        token = lexer.GetToken();
-        token.Print();
-    }
-
 }
 
 int main()
@@ -69,7 +60,7 @@ int main()
     // example method Parser::ConsumeAllInput
     // If you declare another lexer object, lexical analysis will not work correctly
     Parser parser;
-
+    
 	parser.ConsumeAllInput();
 	
 }
