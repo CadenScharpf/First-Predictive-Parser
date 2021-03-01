@@ -10,6 +10,7 @@
 #include <iostream>
 #include <cstdlib>
 #include "parser.h"
+#include "REG.h"
 
 using namespace std;
 
@@ -53,6 +54,12 @@ void Parser::ConsumeAllInput()
     }
 }
 
+REG * buildREGFromStr()
+{
+    
+}
+
+
 int main()
 {
 	// note: the parser class has a lexer object instantiated in it. You should not be declaring
@@ -62,5 +69,5 @@ int main()
     Parser parser;
     
 	parser.ConsumeAllInput();
-	
+
 }
