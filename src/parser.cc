@@ -9,8 +9,8 @@
  */
 #include <iostream>
 #include <cstdlib>
-#include "parser.h"
-#include "REG.h"
+#include "../include/parser.h"
+#include "../include/REG.h"
 
 using namespace std;
 
@@ -54,20 +54,16 @@ void Parser::ConsumeAllInput()
     }
 }
 
-REG * buildREGFromStr()
+REG * prse_expr()
 {
-    
+    REG * reg = new REG();
+    return reg;
 }
 
 
 int main()
 {
-	// note: the parser class has a lexer object instantiated in it. You should not be declaring
-    // a separate lexer object. You can access the lexer object in the parser functions as shown in the
-    // example method Parser::ConsumeAllInput
-    // If you declare another lexer object, lexical analysis will not work correctly
     Parser parser;
-    
-	parser.ConsumeAllInput();
-
+    REG * reg = new REG();
+    cout << reg->start->first_label << endl;
 }

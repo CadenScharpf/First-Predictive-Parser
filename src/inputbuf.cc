@@ -3,13 +3,14 @@
  *
  * Do not share this file with anyone
  */
+
 #include <iostream>
 #include <istream>
 #include <vector>
 #include <string>
 #include <cstdio>
 
-#include "inputbuf.h"
+#include "../include/inputbuf.h"
 
 using namespace std;
 
