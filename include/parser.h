@@ -8,15 +8,25 @@
 
 #include <string>
 #include "lexer.h"
+#include "REG.h"
 
 class Parser {
   public:
+    SymbolTable token_table;
+
     void ConsumeAllInput();
+    void parse_input();
+    void parse_tokens_section();
+    void parse_token_list();
+    void parse_token();
+    REG * parse_expr();
+    Token expect(TokenType expected_type);
+
 
   private:
     LexicalAnalyzer lexer;
     void syntax_error();
-    Token expect(TokenType expected_type);
+   
 };
 
 #endif

@@ -4,6 +4,8 @@
  * Do not share this file with anyone
  */
 
+#include <vector>
+
 /**
  * @class State
  * @brief Object to represent single a state in the REG NFA
@@ -24,4 +26,6 @@ class REG
     public:
         REG();
         State * start;//< Start state
+        State * final;
+        bool isfinal(State * state);
 };      

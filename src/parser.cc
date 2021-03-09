@@ -10,7 +10,7 @@
 #include <iostream>
 #include <cstdlib>
 #include "../include/parser.h"
-#include "../include/REG.h"
+#include "../include/symbol_table.h"
 
 using namespace std;
 
@@ -54,16 +54,100 @@ void Parser::ConsumeAllInput()
     }
 }
 
-REG * prse_expr()
+/**
+ * @brief Parse program input
+ * 
+ */
+void Parser::parse_input()
 {
-    REG * reg = new REG();
-    return reg;
+    parse_tokens_section();
+    Token input_text = expect(INPUT_TEXT);
+}
+/**
+ * @brief Parse the tokens section
+ * 
+ */
+void Parser::parse_tokens_section()
+{
+    parse_token_list();
+    expect(HASH);
 }
 
+/**
+ * @brief Parse list of tokens
+ * 
+ */
+void Parser::parse_token_list()
+{
+    parse_token();
+    Token t = lexer.peek(1);
+    if(t.token_type == COMMA)
+    {
+        expect(COMMA);
+        parse_token_list();
+    }
+}
+
+/**
+ * @brief Parse a token
+ * 
+ */
+void Parser::parse_token()
+{
+    Token id = expect(ID);
+    REG * expr = parse_expr();
+    token_table.push(id.lexeme,expr);
+}
+
+/**
+ * @brief Parse an expression
+ * 
+ * @return REG* 
+ */
+REG * Parser::parse_expr()
+{
+    REG * reg = new REG();//!< expression to be returned
+
+    Token t = lexer.GetToken();
+    if(t.token_type == CHAR)
+    {
+        State * neighbor1 = new State();
+        reg->start->first_neighbor = neighbor1;//!< set transition state
+        reg->start->first_label = t.lexeme[0];//!< set the transion label
+        reg->final = neighbor1;//!< make new state final
+    }
+    else if(t.token_type == LPAREN)
+    {
+        reg->start->first_neighbor = parse_expr()->start; //!< parse first expression
+        expect(RPAREN);//!< consume/check for right paren
+
+        Token tt = lexer.GetToken(); //!< consume manditory operator
+        if(tt.token_type == DOT) //!< concatanation
+        {
+            
+        }
+        else if(tt.token_type == OR) //!< union
+        {
+
+        }
+        else if(tt.token_type == STAR) //!< kleene star
+        {
+
+        }
+        else{syntax_error();}
+    }
+    else if(t.token_type == UNDERSCORE) //!< epsilon
+    {
+        //TODO
+    }
+    else{syntax_error();}
+    //TOTO: concatanation
+    return reg;
+}
 
 int main()
 {
     Parser parser;
-    REG * reg = new REG();
-    cout << reg->start->first_label << endl;
+    parser.parse_input();
+
 }

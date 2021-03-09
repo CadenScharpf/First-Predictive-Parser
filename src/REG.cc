@@ -16,4 +16,11 @@ State::State()
 REG::REG()
 {
     start = new State();
+    final = 0;
+}
+
+bool REG::isfinal(State * state)
+{
+    if(final == state){return true;}
+    return false;
 }
