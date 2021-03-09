@@ -12,6 +12,7 @@
 #include "../include/parser.h"
 #include "../include/symbol_table.h"
 
+
 using namespace std;
 
 void Parser::syntax_error()
@@ -111,43 +112,78 @@ REG * Parser::parse_expr()
     Token t = lexer.GetToken();
     if(t.token_type == CHAR)
     {
-        State * neighbor1 = new State();
-        reg->start->first_neighbor = neighbor1;//!< set transition state
+        reg->start = new State();//!< initialize start state
+        State * final = new State();//!< initilize final state
+        reg->start->first_neighbor = final;//!< set transition state
         reg->start->first_label = t.lexeme[0];//!< set the transion label
-        reg->final = neighbor1;//!< make new state final
+        reg->final = final;//!< make new state final
     }
     else if(t.token_type == LPAREN)
     {
-        reg->start->first_neighbor = parse_expr()->start; //!< parse first expression
+        REG * expression1 = parse_expr(); //!< pointer to parsed first expression
         expect(RPAREN);//!< consume/check for right paren
 
         Token tt = lexer.GetToken(); //!< consume manditory operator
-        if(tt.token_type == DOT) //!< concatanation
+        if(tt.token_type == END_OF_FILE)
         {
             
         }
+        else if(tt.token_type == DOT) //!< concatanation
+        {
+            expect(LPAREN);
+            REG * expression2 = parse_expr(); //!< pointer to parsed second expression
+            expression1->final->first_neighbor = expression2->start;//!< make expr1 final state point to expr2 start
+            expression1->final->first_label = '_';//!< create eosilon transition between the two
+            reg->start = expression1->start;//!< make the top level reg start = to expr1 start
+            reg->final = expression2->final;//!< make the final state = to expr2 fial state
+            //delete expression1;//!< free the intermediary REG
+        }
         else if(tt.token_type == OR) //!< union
         {
-
+            expect(LPAREN);//!< consume the rparen so expr2 follows rule: expr -> CHAR
+            REG * expression2 = parse_expr(); //!< pointer to parsed second expression
+            reg->start = new State(); //!< inititialize start state
+            reg->final = new State;//!< initailize final state
+            reg->start->first_neighbor = expression1->start;
+            reg->start->second_neighbor = expression2->start; 
+            reg->start->first_label = '_';//!< epsilon transitions from start
+            reg->start->second_label = '_';//!< epsilon transitions from start
+            expression1->final->first_neighbor = reg->final;//!< linking expr1 final state
+            expression2->final->first_neighbor = reg->final;//!< linking expr2 final state
+            //delete expression1, expression2;//!< free the intermediary REG
         }
         else if(tt.token_type == STAR) //!< kleene star
         {
-
+            reg->start = new State();//!< initialize start state
+            reg->final = new State();//!< inialize final state
+            reg->start->first_neighbor = expression1->start;//!< linking expr1 start
+            reg->start->first_label = '_';//!< add epsilon transition
+            expression1->final->first_neighbor = reg->final;//!< linking final state to expr2
+            expression1->final->first_label = '_';//!< add epsilon transition
+            expression1->final->second_neighbor = expression1->start;//!< add the transition for kleene star
+            expression1->final->second_label = '_';//!< make it an epsilon transition
+            //delete expression1;//!< free the intermediary REG
         }
         else{syntax_error();}
     }
     else if(t.token_type == UNDERSCORE) //!< epsilon
     {
-        //TODO
+        reg->start = new State();//!< init start state
+        reg->final = new State();//!< init final state
+        reg->start->first_neighbor = reg->final;//!< add transition from start to final
+        reg->start->first_label = '_';//!< make it an epsilon transition
     }
     else{syntax_error();}
-    //TOTO: concatanation
     return reg;
 }
 
 int main()
 {
     Parser parser;
-    parser.parse_input();
+    //parser.parse_input();
+    SymbolTable * tester = new SymbolTable;
+    tester->push("t1", new REG);
+    if(tester->lookup("t1")){cout << tester->lookup("t1")->start->first_label << endl;}
+    else{cout << "not found " << endl;}
 
 }

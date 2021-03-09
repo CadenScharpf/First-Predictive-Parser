@@ -1,13 +1,13 @@
 IDIR=../include
 CC=g++
-CFLAGS=-I$(IDIR)
+CFLAGS=-I$(IDIR) -g
 
 ODIR=../obj
 
-_DEPS = inputbuf.h lexer.h parser.h REG.h
+_DEPS = inputbuf.h lexer.h parser.h REG.h symbol_table.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ = inputbuf.o lexer.o REG.o parser.o
+_OBJ = inputbuf.o lexer.o REG.o parser.o symbol_table.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 $(ODIR)/%.o: %.cc $(DEPS)

@@ -15,7 +15,7 @@ State::State()
 
 REG::REG()
 {
-    start = new State();
+    start = 0;
     final = 0;
 }
 

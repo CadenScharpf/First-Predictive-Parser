@@ -15,7 +15,7 @@ Symbol::Symbol(string newName, REG * newExpr)
 }
 SymbolTable::SymbolTable()
 {
-    root = 0;
+    root = NULL;
 }
 
 /**
@@ -28,12 +28,15 @@ SymbolTable::SymbolTable()
 REG * SymbolTable::lookup(string name)
 {
     Symbol * skipper = root;
-    while(skipper->next)
+    if(root == NULL){return 0;};
+    while(skipper->next != NULL)
     {
+        cout << skipper->name << endl;
         if(skipper->name == name)
         {
             return skipper->expr;
         }
+        skipper = skipper->next;
     }
     return 0;
 }
@@ -56,7 +59,8 @@ bool SymbolTable::push(string name, REG * expr)
     }
 
     Symbol * skipper = root;
-    while(skipper->next){skipper = skipper->next;};
+    if(skipper == NULL){root = newSymbol; return 1;}
+    while(skipper->next != NULL){skipper = skipper->next;};
     skipper->next = newSymbol;
     return 1;
 }

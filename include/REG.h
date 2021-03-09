@@ -5,7 +5,7 @@
  */
 
 #include <vector>
-
+#pragma once
 /**
  * @class State
  * @brief Object to represent single a state in the REG NFA
@@ -14,7 +14,7 @@
 class State
 {
     public:
-        State();
+        State();//!< constructor
         State * first_neighbor;//!< Next State upon reading a first_label
         State * second_neighbor;//!< Next State upon reading a second_label
         char first_label;//!< Input char to initiate transition to first_neighbor
@@ -26,6 +26,6 @@ class REG
     public:
         REG();
         State * start;//< Start state
-        State * final;
+        State * final;//!< final state
         bool isfinal(State * state);
 };      
