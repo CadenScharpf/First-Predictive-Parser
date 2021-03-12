@@ -21,7 +21,7 @@ using namespace std;
 //helper
 void vectorCat(vector<State *>& v1, vector<State *>& v2)
 {
-    
+    v1.insert(v1.end(), v2.begin(), v2.end());
 }
 
 void getChar(string& str, int& pos, char& dest)
@@ -98,14 +98,16 @@ void Parser::parse_input()
             string tok = input_tokens[j];
             char p;
             
-            std::vector<State *> reachable;
+
+            std::vector<State *> reachable;//!< buffer to store reachable nodes after consuming 
             std::vector<State *> reachable_ = reg->epsilonClosure();
+            vectorCat(reachable, reachable_);
+            reachable_.clear();
 
             for(int k = 0; k < tok.length(); k++)//!< loop over characters in the input strings
             {
                 p = tok[k]; //!< consume character to process
                 vector<State *> reachable_ = reg->start->reachableBy(p);
-                reachable.insert(reachable.end(), reachable_.begin(), reachable_.end());
 
             }
         }

@@ -35,6 +35,12 @@ std::vector <State *> REG::epsilonClosure()
     if(start->second_label == '_'){ret.push_back(start->second_neighbor);}
 }
 
+bool REG::match(std::string s)
+{
+    using namespace std;
+    
+}
+
 bool REG::isfinal(State * state)
 {
     if(final == state){return true;}

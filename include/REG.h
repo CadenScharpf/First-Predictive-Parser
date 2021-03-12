@@ -5,6 +5,8 @@
  */
 
 #include <vector>
+#include <string>
+
 #pragma once
 /**
  * @class State
@@ -30,4 +32,5 @@ class REG
         State * final;//!< final state
         bool isfinal(State * state);
         std::vector <State *> epsilonClosure();
+        bool match(std::string s);
 };      
