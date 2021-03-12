@@ -13,10 +13,26 @@ State::State()
     second_label = 0;
 }
 
+std::vector<State*> State::reachableBy(char p)
+{
+    std::vector<State*> reachable;
+    if(first_label == p || first_label == '_'){reachable.push_back(first_neighbor);}
+    if(second_label ==p || first_label == '_'){reachable.push_back(second_neighbor);}
+    return reachable;
+
+}
+
+
 REG::REG()
 {
     start = 0;
     final = 0;
+}
+std::vector <State *> REG::epsilonClosure()
+{
+    std::vector <State *> ret;
+    if(start->first_label == '_'){ret.push_back(start->first_neighbor);}
+    if(start->second_label == '_'){ret.push_back(start->second_neighbor);}
 }
 
 bool REG::isfinal(State * state)

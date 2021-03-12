@@ -11,9 +11,24 @@
 #include <cstdlib>
 #include "../include/parser.h"
 #include "../include/symbol_table.h"
-
+#include <sstream>
+#include <string.h>
+#include <vector>
+#include <bits/stdc++.h> 
 
 using namespace std;
+
+//helper
+void vectorCat(vector<State *>& v1, vector<State *>& v2)
+{
+    
+}
+
+void getChar(string& str, int& pos, char& dest)
+{
+    dest = str[pos];
+    pos++;
+}
 
 void Parser::syntax_error()
 {
@@ -61,8 +76,40 @@ void Parser::ConsumeAllInput()
  */
 void Parser::parse_input()
 {
-    parse_tokens_section();
-    Token input_text = expect(INPUT_TEXT);
+    parse_tokens_section();//!< Generate REG graphs
+    Token input_text = expect(INPUT_TEXT);//!< Consume input text
+    
+    // Tokenizing the input text
+    vector<string> input_tokens;
+    vector<string> tok_types; 
+    stringstream s(input_text.lexeme);
+    string buff;
+    s>>buff;
+    while(s >> buff){input_tokens.push_back(buff);}
+    input_tokens.pop_back();
+
+    for(int i = 0 ;i < token_table.size; i++)//!< iterate over the REG graphs
+    {   
+        Symbol * symbol = token_table.getIndex(i);
+        REG * reg = symbol->expr;
+
+        for(int j = 0;j < input_tokens.size(); j++)//!< loop over the input strings
+        {
+            string tok = input_tokens[j];
+            char p;
+            
+            std::vector<State *> reachable;
+            std::vector<State *> reachable_ = reg->epsilonClosure();
+
+            for(int k = 0; k < tok.length(); k++)//!< loop over characters in the input strings
+            {
+                p = tok[k]; //!< consume character to process
+                vector<State *> reachable_ = reg->start->reachableBy(p);
+                reachable.insert(reachable.end(), reachable_.begin(), reachable_.end());
+
+            }
+        }
+    }
 }
 /**
  * @brief Parse the tokens section
@@ -137,6 +184,7 @@ REG * Parser::parse_expr()
             reg->start = expression1->start;//!< make the top level reg start = to expr1 start
             reg->final = expression2->final;//!< make the final state = to expr2 fial state
             //delete expression1;//!< free the intermediary REG
+            expect(RPAREN);
         }
         else if(tt.token_type == OR) //!< union
         {
@@ -151,6 +199,7 @@ REG * Parser::parse_expr()
             expression1->final->first_neighbor = reg->final;//!< linking expr1 final state
             expression2->final->first_neighbor = reg->final;//!< linking expr2 final state
             //delete expression1, expression2;//!< free the intermediary REG
+            expect(RPAREN);
         }
         else if(tt.token_type == STAR) //!< kleene star
         {
@@ -180,10 +229,6 @@ REG * Parser::parse_expr()
 int main()
 {
     Parser parser;
-    //parser.parse_input();
-    SymbolTable * tester = new SymbolTable;
-    tester->push("t1", new REG);
-    if(tester->lookup("t1")){cout << tester->lookup("t1")->start->first_label << endl;}
-    else{cout << "not found " << endl;}
+    parser.parse_input();
 
 }

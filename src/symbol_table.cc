@@ -11,11 +11,12 @@ Symbol::Symbol(string newName, REG * newExpr)
 {
     name = newName;
     expr = newExpr;
-    next = 0;
+    next = NULL;
 }
 SymbolTable::SymbolTable()
 {
     root = NULL;
+    size = 0;
 }
 
 /**
@@ -27,16 +28,14 @@ SymbolTable::SymbolTable()
  */
 REG * SymbolTable::lookup(string name)
 {
-    Symbol * skipper = root;
-    if(root == NULL){return 0;};
-    while(skipper->next != NULL)
+    Symbol ** current = &root;
+    while(*(current))
     {
-        cout << skipper->name << endl;
-        if(skipper->name == name)
+        if( ((*current)->name) == name)
         {
-            return skipper->expr;
+            return ((*current)->expr);
         }
-        skipper = skipper->next;
+        current = & (*current)->next;
     }
     return 0;
 }
@@ -51,16 +50,33 @@ REG * SymbolTable::lookup(string name)
  */
 bool SymbolTable::push(string name, REG * expr)
 {
-    Symbol * newSymbol = new Symbol(name, expr);
-    if(newSymbol = 0)
+    Symbol * newSymbol = new (nothrow) Symbol(name, expr);
+    if(newSymbol == 0)
     {
         cout << "ERROR: Failed to alocate space for a new symbol" << endl;
         return 0;
     }
-
-    Symbol * skipper = root;
-    if(skipper == NULL){root = newSymbol; return 1;}
-    while(skipper->next != NULL){skipper = skipper->next;};
-    skipper->next = newSymbol;
+ 
+    Symbol ** current = &root;
+    while((*current)){current = & (*current)->next;};
+    *current = newSymbol;
+    size++;
     return 1;
+}
+
+/**
+ * @brief Provides arraylike access to the list of Symbols
+ * 
+ * @param idx 'index' to be accessed
+ * @return REG* NULL if idx < # symbols
+ *              otherwise,
+ *              REG* of the idx'th symbol in the list
+ */
+Symbol * SymbolTable::getIndex(int idx)
+{
+    if(idx > size-1){return NULL;}
+    int pos = 0;
+    Symbol ** current = &root;
+    while(pos < idx){current = &(*current)->next; pos++;};
+    return *current;
 }
