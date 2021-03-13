@@ -44,30 +44,11 @@ Token Parser::expect(TokenType expected_type)
 }
 
 // Parsing
-
-// This function is simply to illustrate the GetToken() function
-// you will not need it for your project and you can delete it
-// the function also illustrates the use of peek()
-void Parser::ConsumeAllInput()
-{
-    Token token;
-    int i = 1;
-    
-    token = lexer.peek(i);
-    token.Print();
-    while (token.token_type != END_OF_FILE)
-    {
-        i = i+1;
-        token = lexer.peek(i);
-        token.Print();
-    }
-}
-
 /**
  * @brief Parse program input
  * 
  */
-void Parser::parse_input()
+void Parser::parse_input() 
 {
     parse_tokens_section();//!< Generate REG graphs
     Token input_text = expect(INPUT_TEXT);//!< Consume input text
@@ -85,9 +66,9 @@ void Parser::parse_input()
     {   
         bool matched = 0;
         string token = input_tokens[i];
-        for(int j = 0;j < input_tokens.size(); j++)//!< loop over REG graphs(symbols)
+        for(int j = 0;j < token_table.size; j++)//!< loop over REG graphs(symbols)
         {
-            Symbol * symbol = token_table.getIndex(i);
+            Symbol * symbol = token_table.getIndex(j);
             REG * reg = symbol->expr;
             if(reg->match(input_tokens[j]))
             {
@@ -96,11 +77,11 @@ void Parser::parse_input()
                 break;
             }
         }
-        if(matched == 0){cout << "error" << endl;}
+        if(matched == 0){cout << "error" << endl;exit(0);}
     }
     for(int i = 0; i<input_tokens.size(); i++)
     {
-        cout << input_tokens[i] << ":" << tok_types[i];
+        cout << input_tokens[i] << ":" << tok_types[i]; 
     }
 }
 /**
@@ -197,8 +178,10 @@ REG * Parser::parse_expr()
         {
             reg->start = new State();//!< initialize start state
             reg->final = new State();//!< inialize final state
-            reg->start->first_neighbor = expression1->start;//!< linking expr1 start
-            reg->start->first_label = '_';//!< add epsilon transition
+            reg->start->first_neighbor = expression1->start;//!< linking transition to f*
+            reg->start->second_neighbor = expression1->final;//!< linking transition to f* final
+            reg->start->first_label = '_';//!< add epsilon transition to f*
+            reg->start->second_label = '_';//add transition to accept epsilion
             expression1->final->first_neighbor = reg->final;//!< linking final state to expr2
             expression1->final->first_label = '_';//!< add epsilon transition
             expression1->final->second_neighbor = expression1->start;//!< add the transition for kleene star

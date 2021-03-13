@@ -22,10 +22,9 @@ State::State()
 std::vector<State*> State::reachableBy(char p)
 {
     std::vector<State*> reachable;
-    if(first_label == p || first_label == '_'){reachable.push_back(first_neighbor);}
-    if(second_label ==p || first_label == '_'){reachable.push_back(second_neighbor);}
+    if(first_label != 0 &&(first_label == p || first_label == '_')){reachable.push_back(first_neighbor);}
+    if(second_label != 0 &&(second_label == p || second_label == '_')){reachable.push_back(second_neighbor);}
     return reachable;
-
 }
 
 REG::REG()
