@@ -17,12 +17,6 @@
 
 using namespace std;
 
-//helper
-void vectorCat(vector<State *>& v1, vector<State *>& v2)
-{
-    v1.insert(v1.end(), v2.begin(), v2.end());
-}
-
 void getChar(string& str, int& pos, char& dest)
 {
     dest = str[pos];
@@ -87,29 +81,26 @@ void Parser::parse_input()
     while(s >> buff){input_tokens.push_back(buff);}
     input_tokens.pop_back();
 
-    for(int i = 0 ;i < token_table.size; i++)//!< iterate over the REG graphs
+    for(int i = 0 ;i < input_tokens.size(); i++)//!< loop over input strings
     {   
-        Symbol * symbol = token_table.getIndex(i);
-        REG * reg = symbol->expr;
-
-        for(int j = 0;j < input_tokens.size(); j++)//!< loop over the input strings
+        bool matched = 0;
+        string token = input_tokens[i];
+        for(int j = 0;j < input_tokens.size(); j++)//!< loop over REG graphs(symbols)
         {
-            string tok = input_tokens[j];
-            char p;
-            
-
-            std::vector<State *> reachable;//!< buffer to store reachable nodes after consuming 
-            std::vector<State *> reachable_ = reg->epsilonClosure();
-            vectorCat(reachable, reachable_);
-            reachable_.clear();
-
-            for(int k = 0; k < tok.length(); k++)//!< loop over characters in the input strings
+            Symbol * symbol = token_table.getIndex(i);
+            REG * reg = symbol->expr;
+            if(reg->match(input_tokens[j]))
             {
-                p = tok[k]; //!< consume character to process
-                vector<State *> reachable_ = reg->start->reachableBy(p);
-
+                matched = 1;
+                tok_types.push_back(symbol->name);
+                break;
             }
         }
+        if(matched == 0){cout << "error" << endl;}
+    }
+    for(int i = 0; i<input_tokens.size(); i++)
+    {
+        cout << input_tokens[i] << ":" << tok_types[i];
     }
 }
 /**

@@ -6,6 +6,7 @@
 
 #include <vector>
 #include <string>
+#include <iterator>
 
 #pragma once
 /**
@@ -31,17 +32,20 @@ class REG
         REG();
         State * start;//!< Start state
         State * final;//!< final state
-        bool isfinal(State * state);//!< 
-        std::vector<State *> reachableBy(std::string s);//!< 
-
-        bool match(std::string s)
-        {
-            std::vector<State *> reachable = reachableBy(s);
-            std::input_iterator_tag(State *);
-            //if(std::find()
-        }
+        bool isfinal(State * state);
+        std::vector<State *> reachableBy(std::string s);//!<set of all possible states
+                                                        //  to be in after consuming s 
+        bool match(std::string s);
 
     private:
         std::vector <State *> epsilonClosure();
+        std::vector <State *> reachableNodeAccumulator(std::string s);
+        std::vector<State *> reachableByOne(std::vector<State *> states, char input);
+        std::vector<State *> epsilonAccumulator(std::vector<State *> states);
 
-};      
+};  
+
+void vectorCat(std::vector<State *>& v1, std::vector<State *> v2)
+{
+    v1.insert(v1.end(), v2.begin(), v2.end());
+}

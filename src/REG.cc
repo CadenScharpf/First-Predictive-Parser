@@ -4,6 +4,7 @@
  * Do not share this file with anyone
  */
 #include "../include/REG.h"
+#include <iostream>
 
 State::State()
 {
@@ -22,23 +23,38 @@ std::vector<State*> State::reachableBy(char p)
 
 }
 
-
 REG::REG()
 {
     start = 0;
     final = 0;
 }
+
+std::vector<State *> REG::epsilonAccumulator(std::vector<State *> states)
+{
+    std::vector<State*> reachable;
+    vectorCat(reachable, states);
+     for(int i = 0; i < states.size(); i++)
+     {
+         vectorCat(reachable, states[i]->reachableBy('_'));
+     }
+     if(reachable == states)
+     {
+        if(std::find(reachable.begin(), reachable.end(), final) != reachable.end())
+        {
+             std::cout << "epsilon is nooooOOOoot a token\n";
+             exit(1);
+        }
+        return reachable;
+     }
+     else
+     {
+        return epsilonAccumulator(reachable);
+     }
+}// end method epsilon accumulator
+
 std::vector <State *> REG::epsilonClosure()
 {
-    std::vector <State *> ret;
-    if(start->first_label == '_'){ret.push_back(start->first_neighbor);}
-    if(start->second_label == '_'){ret.push_back(start->second_neighbor);}
-}
-
-bool REG::match(std::string s)
-{
-    using namespace std;
-    
+    return epsilonAccumulator(start->reachableBy('_'));
 }
 
 bool REG::isfinal(State * state)
@@ -47,4 +63,42 @@ bool REG::isfinal(State * state)
     return false;
 }
 
-bool REG::match(string s)
+std::vector<State *> REG::reachableBy(std::string s)
+{
+    return reachableNodeAccumulator(s);
+}
+std::vector<State *> reachableByOne(std::vector<State *> states, char input)
+{
+    std::vector<State *> reachable;
+    for(int i = 0; i < states.size(); i++)
+    {
+        State * state = states[i];
+        vectorCat(reachable,state->reachableBy(input));
+    }
+    return reachable;
+}
+
+std::vector<State *> REG::reachableNodeAccumulator(std::string s)
+{
+    if(s.length() == 0)//!< base case
+    {
+       return epsilonClosure();
+    }
+    else
+    {
+        return reachableByOne(reachableNodeAccumulator(s.substr(1)), s[0]);
+    }
+}
+
+bool REG::match(std::string s)
+{
+    std::vector<State *> reachable = reachableBy(s);
+    if(std::find(reachable.begin(), reachable.end(), final) != reachable.end())
+    {
+        return 1; // s is accepting
+    }
+    else
+    {
+        return 0; // s not accepting
+    }
+}// end method match
