@@ -2,7 +2,7 @@ IDIR=include
 ODIR=obj
 
 CC=g++
-CFLAGS=-I$(IDIR) -g
+CFLAGS= -std=c++2a -I$(IDIR) -g
 
 _DEPS = inputbuf.h lexer.h parser.h REG.h symbol_table.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))

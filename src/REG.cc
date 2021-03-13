@@ -6,6 +6,11 @@
 #include "../include/REG.h"
 #include <iostream>
 
+void vectorCat(std::vector<State *>& v1, std::vector<State *> v2)
+{
+    v1.insert(v1.end(), v2.begin(), v2.end());
+}
+
 State::State()
 {
     first_neighbor = 0;
@@ -67,7 +72,7 @@ std::vector<State *> REG::reachableBy(std::string s)
 {
     return reachableNodeAccumulator(s);
 }
-std::vector<State *> reachableByOne(std::vector<State *> states, char input)
+std::vector<State *> REG::reachableByOne(std::vector<State *> states, char input)
 {
     std::vector<State *> reachable;
     for(int i = 0; i < states.size(); i++)
@@ -93,7 +98,7 @@ std::vector<State *> REG::reachableNodeAccumulator(std::string s)
 bool REG::match(std::string s)
 {
     std::vector<State *> reachable = reachableBy(s);
-    if(std::find(reachable.begin(), reachable.end(), final) != reachable.end())
+    if(std::find(reachable.begin(), reachable.end(), &(*final)) != reachable.end())
     {
         return 1; // s is accepting
     }

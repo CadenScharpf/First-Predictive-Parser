@@ -6,8 +6,6 @@
 
 #include <vector>
 #include <string>
-#include <iterator>
-
 #pragma once
 /**
  * @class State
@@ -45,7 +43,3 @@ class REG
 
 };  
 
-void vectorCat(std::vector<State *>& v1, std::vector<State *> v2)
-{
-    v1.insert(v1.end(), v2.begin(), v2.end());
-}
