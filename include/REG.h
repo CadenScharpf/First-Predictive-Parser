@@ -21,16 +21,27 @@ class State
         State * second_neighbor;//!< Next State upon reading a second_label
         char first_label;//!< Input char to initiate transition to first_neighbor
         char second_label;//!< Input char to initiate transition to second_neighbor
-        std::vector<State*> reachableBy(char p);
+        std::vector<State*> reachableBy(char p);//!< 
 };
+
 
 class REG
 {
     public:
         REG();
-        State * start;//< Start state
+        State * start;//!< Start state
         State * final;//!< final state
-        bool isfinal(State * state);
+        bool isfinal(State * state);//!< 
+        std::vector<State *> reachableBy(std::string s);//!< 
+
+        bool match(std::string s)
+        {
+            std::vector<State *> reachable = reachableBy(s);
+            std::input_iterator_tag(State *);
+            //if(std::find()
+        }
+
+    private:
         std::vector <State *> epsilonClosure();
-        bool match(std::string s);
+
 };      

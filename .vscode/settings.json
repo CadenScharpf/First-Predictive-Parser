@@ -4,5 +4,12 @@
         "ostream": "cpp",
         "iosfwd": "cpp",
         "string": "cpp"
-    }
+    },
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/Users/caden_scharpf/Developer/First-Predictive-Parser/bin",
+            "binaryPath": "/Users/caden_scharpf/Developer/First-Predictive-Parser/bin/Project2",
+            "binaryArgs": []
+        }
+    ]
 }

@@ -46,3 +46,5 @@ bool REG::isfinal(State * state)
     if(final == state){return true;}
     return false;
 }
+
+bool REG::match(string s)
