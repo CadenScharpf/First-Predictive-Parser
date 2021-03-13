@@ -18,7 +18,15 @@ State::State()
     first_label = 0;
     second_label = 0;
 }
-
+StateSet::StateSet()
+{
+    size = 0;
+}
+REG::REG()
+{
+    start = 0;
+    final = 0;
+}
 std::vector<State*> State::reachableBy(char p)
 {
     std::vector<State*> reachable;
@@ -27,11 +35,7 @@ std::vector<State*> State::reachableBy(char p)
     return reachable;
 }
 
-REG::REG()
-{
-    start = 0;
-    final = 0;
-}
+
 
 std::vector<State *> REG::epsilonAccumulator(std::vector<State *> states)
 {

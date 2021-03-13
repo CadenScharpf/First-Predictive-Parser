@@ -7,6 +7,8 @@
 #include <vector>
 #include <string>
 #pragma once
+
+
 /**
  * @class State
  * @brief Object to represent single a state in the REG NFA
@@ -23,6 +25,23 @@ class State
         std::vector<State*> reachableBy(char p);//!< 
 };
 
+typedef struct StateSetNode
+{
+    State * data;
+    State * next;
+}state_set_t;
+
+class StateSet
+{
+    public:
+    StateSet();
+    int size;
+    StateSetNode * head;
+    bool push(State * s);
+    bool equals(StateSet * s);
+    bool contains(State * s);
+    bool cat(StateSet * s);
+};
 
 class REG
 {
