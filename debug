@@ -1,0 +1,3 @@
+lldb bin/Project2
+settings set target.input-path testing/cases/test2.txt
+process launch

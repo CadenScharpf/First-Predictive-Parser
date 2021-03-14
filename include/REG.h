@@ -8,8 +8,6 @@
 #include <string>
 #pragma once
 
-struct StateSet;
-
 /**
  * @class State
  * @brief Object to represent single a state in the REG NFA
@@ -27,11 +25,13 @@ class State
         void print();
 };
 
-typedef struct StateSetNode
+class StateSetNode
 {
+    public:
     State * data;
     StateSetNode * next;
-}state_set_t;
+    StateSetNode(State * d, StateSetNode * n);
+};
 
 class StateSet
 {
@@ -48,7 +48,7 @@ class StateSet
     State * getIdx(int idx);
 
     private:
-        int garbageAccumulator(state_set_t * head);
+        int garbageAccumulator(StateSetNode * head);
 };
 
 class REG
