@@ -23,24 +23,30 @@ class State
         char first_label;//!< Input char to initiate transition to first_neighbor
         char second_label;//!< Input char to initiate transition to second_neighbor
         std::vector<State*> reachableBy(char p);//!< 
+        void print();
 };
 
 typedef struct StateSetNode
 {
     State * data;
-    State * next;
+    StateSetNode * next;
 }state_set_t;
 
 class StateSet
 {
     public:
     StateSet();
+    ~StateSet();
     int size;
     StateSetNode * head;
     bool push(State * s);
     bool equals(StateSet * s);
     bool contains(State * s);
     bool cat(StateSet * s);
+    void print();
+
+    private:
+        int garbageAccumulator(state_set_t * head);
 };
 
 class REG
