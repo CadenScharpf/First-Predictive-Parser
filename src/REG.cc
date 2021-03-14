@@ -53,7 +53,7 @@ int StateSet::garbageAccumulator(state_set_t * head)
 {
     if(head == NULL){return 0;}
     int count = garbageAccumulator(head->next);
-    free(head);
+    delete head;
     return count+1;
 }
 
@@ -66,7 +66,7 @@ bool StateSet::push(State * s)
         current = & (*current)->next;
     }
     if(*current){if((*current)->data == s){return 1;}}//!< check if state* in the set
-    state_set_t * newNode = (state_set_t *)malloc(sizeof(state_set_t));
+    state_set_t * newNode = new state_set_t;
     state_set_t * temp = *current;
     state_set_t buff = {s,temp};
     if(!newNode){return 0;}//!< mem check
