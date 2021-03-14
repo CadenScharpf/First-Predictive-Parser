@@ -6,13 +6,6 @@
 #include "../include/REG.h"
 #include <iostream>
 
-void vectorCat(std::vector<State *>& v1, std::vector<State *> v2)
-{
-    v1.insert(v1.end(), v2.begin(), v2.end());
-}
-
-
-
 
 //State:: -------------------------------------
 State::State()
@@ -38,18 +31,13 @@ void State::print()
 }
 
 //StateSet::
-StateSet::StateSet()
-{
-    size = 0;
-    head = NULL;
-}
+StateSet::StateSet(){size = 0; head = NULL;};
 
-StateSet::~StateSet()
-{
-    garbageAccumulator(head);
-}
+StateSet::~StateSet(){garbageAccumulator(head);};
 
-int StateSet::garbageAccumulator(state_set_t * head)
+StateSetNode::StateSetNode(State * d, StateSetNode * n){data = d; next = n;};
+
+int StateSet::garbageAccumulator(StateSet * head)
 {
     if(head == NULL){return 0;}
     int count = garbageAccumulator(head->next);
@@ -59,16 +47,16 @@ int StateSet::garbageAccumulator(state_set_t * head)
 
 bool StateSet::push(State * s)
 {
-    state_set_t ** current = &head;
+    StateSet ** current = &head;
     while(*current)
     {
         if((s <= (*current)->data)){break;}
         current = & (*current)->next;
     }
     if(*current){if((*current)->data == s){return 1;}}//!< check if state* in the set
-    state_set_t * newNode = new state_set_t;
-    state_set_t * temp = *current;
-    state_set_t buff = {s,temp};
+    StateSet * newNode = new StateSet;
+    StateSet * temp = *current;
+    StateSet buff = {s,temp};
     if(!newNode){return 0;}//!< mem check
     *newNode = buff;
     (*current) = newNode;
@@ -78,8 +66,8 @@ bool StateSet::push(State * s)
 bool StateSet::equals(StateSet * s)
 {
     if(s->size != size){return 0;}
-    state_set_t ** current1 = &head;
-    state_set_t ** current2 = &(s->head);
+    StateSet ** current1 = &head;
+    StateSet ** current2 = &(s->head);
     while(*current1 && *current2)
     {
         if((*current1)->data != (*current2)->data){return 0;}
@@ -91,7 +79,7 @@ bool StateSet::equals(StateSet * s)
 
 bool StateSet::contains(State * s)
 {
-    state_set_t ** current = &head;
+    StateSet ** current = &head;
     while(*current)
     {
         if((*current)->data == s){return 1;}
@@ -102,7 +90,7 @@ bool StateSet::contains(State * s)
 
 bool StateSet::cat(StateSet * s)
 {
-    state_set_t ** current = & (s->head);
+    StateSet ** current = & (s->head);
     while (*current)
     {
         push((*current)->data);
@@ -113,7 +101,7 @@ bool StateSet::cat(StateSet * s)
 
 void StateSet::print()
 {
-    state_set_t ** curr = &head;
+    StateSet ** curr = &head;
     while(*curr)
     {
         ((*curr)->data)->print();
@@ -140,7 +128,7 @@ StateSet REG::epsilonAccumulator(StateSet * states)
 {
     StateSet reachable;
     reachable.cat(states);
-     state_set_t ** curr = &(states->head);
+     StateSet ** curr = &(states->head);
      while(*curr)//!< add epsilon closure of states to reachable
      {
          StateSet adding = ((*curr)->data)->reachableBy('_');
@@ -182,12 +170,13 @@ StateSet REG::reachableBy(std::string s)
 StateSet REG::reachableByOne(StateSet * states, char input)
 {
     StateSet reachable;
-    state_set_t ** curr = &(states->head);
+    StateSet ** curr = &(states->head);
     while(*curr)
     {
         State * state = (*curr)->data;
         StateSet s = state->reachableBy(input);
         reachable.cat(&s);
+        curr = & (*curr)->next;
     }
     return reachable;
 }
