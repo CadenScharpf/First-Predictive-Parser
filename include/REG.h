@@ -8,6 +8,8 @@
 #include <string>
 #pragma once
 
+class StateSet;
+
 /**
  * @class State
  * @brief Object to represent single a state in the REG NFA

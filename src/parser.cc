@@ -17,6 +17,17 @@
 
 using namespace std;
 
+vector<string> tokenize(string s)
+{
+    vector<string> input_tokens;
+    stringstream ss(s);
+    string buff;
+    ss>>buff;//!< skip the space
+    while(ss >> buff){input_tokens.push_back(buff);}
+    input_tokens.pop_back();
+    return input_tokens;
+}
+
 void getChar(string& str, int& pos, char& dest)
 {
     dest = str[pos];
@@ -43,6 +54,7 @@ Token Parser::expect(TokenType expected_type)
     return t;
 }
 
+
 // Parsing
 /**
  * @brief Parse program input
@@ -54,13 +66,9 @@ void Parser::parse_input()
     Token input_text = expect(INPUT_TEXT);//!< Consume input text
     
     // Tokenizing the input text
-    vector<string> input_tokens;
+    vector<string> input_tokens = tokenize(expect(INPUT_TEXT).lexeme);
     vector<string> tok_types; 
-    stringstream s(input_text.lexeme);
-    string buff;
-    s>>buff;
-    while(s >> buff){input_tokens.push_back(buff);}
-    input_tokens.pop_back();
+    
 
     for(int i = 0 ;i < input_tokens.size(); i++)//!< loop over input strings
     {   
@@ -168,7 +176,7 @@ REG * Parser::parse_expr()
             reg->start->first_neighbor = expression1->start;
             reg->start->second_neighbor = expression2->start; 
             reg->start->first_label = '_';//!< epsilon transitions from start
-            reg->start->second_label = '_';//!< epsilon transitions from start
+            reg->start->second_label = '_';//!< epsilon transritions from start
             expression1->final->first_neighbor = reg->final;//!< linking expr1 final state
             expression2->final->first_neighbor = reg->final;//!< linking expr2 final state
             //delete expression1, expression2;//!< free the intermediary REG

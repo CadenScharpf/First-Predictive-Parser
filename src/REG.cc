@@ -167,6 +167,7 @@ StateSet REG::reachableBy(std::string s)
 
 StateSet REG::reachableByOne(StateSet * states, char input)
 {
+    states->print();
     StateSet reachable;
     StateSetNode ** curr = &(states->head);
     while(*curr)//!< 
@@ -188,6 +189,7 @@ StateSet REG::reachableNodeAccumulator(std::string s)
     else
     {
         StateSet r =  reachableNodeAccumulator(s.substr(1));
+        //
         return reachableByOne(&r, s[0]);
     }
 }
