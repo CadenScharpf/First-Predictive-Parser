@@ -8,6 +8,7 @@
 #include <string>
 #pragma once
 
+struct StateSet;
 
 /**
  * @class State
@@ -22,7 +23,7 @@ class State
         State * second_neighbor;//!< Next State upon reading a second_label
         char first_label;//!< Input char to initiate transition to first_neighbor
         char second_label;//!< Input char to initiate transition to second_neighbor
-        std::vector<State*> reachableBy(char p);//!< 
+        StateSet reachableBy(char p);//!< 
         void print();
 };
 
@@ -44,6 +45,7 @@ class StateSet
     bool contains(State * s);
     bool cat(StateSet * s);
     void print();
+    State * getIdx(int idx);
 
     private:
         int garbageAccumulator(state_set_t * head);
@@ -56,15 +58,15 @@ class REG
         State * start;//!< Start state
         State * final;//!< final state
         bool isfinal(State * state);
-        std::vector<State *> reachableBy(std::string s);//!<set of all possible states
+        StateSet reachableBy(std::string s);//!<set of all possible states
                                                         //  to be in after consuming s 
         bool match(std::string s);
 
     private:
-        std::vector <State *> epsilonClosure();
-        std::vector <State *> reachableNodeAccumulator(std::string s);
-        std::vector<State *> reachableByOne(std::vector<State *> states, char input);
-        std::vector<State *> epsilonAccumulator(std::vector<State *> states);
+        StateSet epsilonClosure();
+        StateSet reachableNodeAccumulator(std::string s);
+        StateSet reachableByOne(StateSet * states, char input);
+        StateSet epsilonAccumulator(StateSet * states);
 
 };  
 

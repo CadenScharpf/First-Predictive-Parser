@@ -203,19 +203,7 @@ REG * Parser::parse_expr()
 
 int main()
 {
-    //Parser parser;
-    StateSet TestSet;
-    State s;
-    s.first_label='a';
-    s.second_label='b';
-    s.first_neighbor = new State;
-    s.second_neighbor = new State;
-
-    for(int i = 0;i < 10; i++)
-    {
-        TestSet.push(&s);
-    }
-    TestSet.print();
-    //parser.parse_input();
+    Parser parser;
+    parser.parse_input();
 
 }

@@ -23,11 +23,11 @@ State::State()
     second_label = 0;
 }
 
-std::vector<State*> State::reachableBy(char p)
+StateSet State::reachableBy(char p)
 {
-    std::vector<State*> reachable;
-    if(first_label != 0 &&(first_label == p || first_label == '_')){reachable.push_back(first_neighbor);}
-    if(second_label != 0 &&(second_label == p || second_label == '_')){reachable.push_back(second_neighbor);}
+    StateSet reachable;
+    if(first_label != 0 &&(first_label == p || first_label == '_')){reachable.push(first_neighbor);}
+    if(second_label != 0 &&(second_label == p || second_label == '_')){reachable.push(second_neighbor);}
     return reachable;
 }
 
@@ -41,6 +41,7 @@ void State::print()
 StateSet::StateSet()
 {
     size = 0;
+    head = NULL;
 }
 
 StateSet::~StateSet()
@@ -120,6 +121,14 @@ void StateSet::print()
     }
 }
 
+State * StateSet::getIdx(int idx)
+{
+    if(idx > size -1){return NULL;}
+    StateSetNode ** current = &head;
+    for(int i = idx; i > 0; i--){current = & (*current)->next;}
+    return (*current)->data;
+}
+
 //REG:: ---------------------------------------
 REG::REG()
 {
@@ -127,17 +136,20 @@ REG::REG()
     final = 0;
 }
 
-std::vector<State *> REG::epsilonAccumulator(std::vector<State *> states)
+StateSet REG::epsilonAccumulator(StateSet * states)
 {
-    std::vector<State*> reachable;
-    vectorCat(reachable, states);
-     for(int i = 0; i < states.size(); i++)
+    StateSet reachable;
+    reachable.cat(states);
+     state_set_t ** curr = &(states->head);
+     while(*curr)//!< add epsilon closure of states to reachable
      {
-         vectorCat(reachable, states[i]->reachableBy('_'));
+         StateSet adding = ((*curr)->data)->reachableBy('_');
+         reachable.cat(&adding);
+         curr = & (*curr)->next;
      }
-     if(reachable == states)
+     if(reachable.equals(states))
      {
-        if(std::find(reachable.begin(), reachable.end(), final) != reachable.end())
+        if(reachable.contains(final))
         {
              std::cout << "epsilon is nooooOOOoot a token\n";
              exit(1);
@@ -146,13 +158,14 @@ std::vector<State *> REG::epsilonAccumulator(std::vector<State *> states)
      }
      else
      {
-        return epsilonAccumulator(reachable);
+        return epsilonAccumulator(&reachable);
      }
 }// end method epsilon accumulator
 
-std::vector <State *> REG::epsilonClosure()
+StateSet REG::epsilonClosure()
 {
-    return epsilonAccumulator(start->reachableBy('_'));
+    StateSet s = start->reachableBy('_');
+    return epsilonAccumulator(&s);
 }
 
 bool REG::isfinal(State * state)
@@ -161,22 +174,25 @@ bool REG::isfinal(State * state)
     return false;
 }
 
-std::vector<State *> REG::reachableBy(std::string s)
+StateSet REG::reachableBy(std::string s)
 {
     return reachableNodeAccumulator(s);
 }
-std::vector<State *> REG::reachableByOne(std::vector<State *> states, char input)
+
+StateSet REG::reachableByOne(StateSet * states, char input)
 {
-    std::vector<State *> reachable;
-    for(int i = 0; i < states.size(); i++)
+    StateSet reachable;
+    state_set_t ** curr = &(states->head);
+    while(*curr)
     {
-        State * state = states[i];
-        vectorCat(reachable,state->reachableBy(input));
+        State * state = (*curr)->data;
+        StateSet s = state->reachableBy(input);
+        reachable.cat(&s);
     }
     return reachable;
 }
 
-std::vector<State *> REG::reachableNodeAccumulator(std::string s)
+StateSet REG::reachableNodeAccumulator(std::string s)
 {
     if(s.length() == 0)//!< base case
     {
@@ -184,14 +200,15 @@ std::vector<State *> REG::reachableNodeAccumulator(std::string s)
     }
     else
     {
-        return reachableByOne(reachableNodeAccumulator(s.substr(1)), s[0]);
+        StateSet r =  reachableNodeAccumulator(s.substr(1));
+        return reachableByOne(&r, s[0]);
     }
 }
 
 bool REG::match(std::string s)
 {
-    std::vector<State *> reachable = reachableBy(s);
-    if(std::find(reachable.begin(), reachable.end(), &(*final)) != reachable.end())
+    StateSet reachable = reachableBy(s);
+    if(reachable.contains(final))
     {
         return 1; // s is accepting
     }
