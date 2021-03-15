@@ -1,2 +1,2 @@
 make 
-bin/Project2 < <input-file>
+bin/Project2 < testing/cases/final_product/test0.txt

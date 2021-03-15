@@ -40,6 +40,8 @@ REG * SymbolTable::lookup(string name)
     return 0;
 }
 
+
+
 /**
  * @brief Push a new symbol onto the table
  * 
@@ -79,4 +81,15 @@ Symbol * SymbolTable::getIndex(int idx)
     Symbol ** current = &root;
     while(pos < idx){current = &(*current)->next; pos++;};
     return *current;
+}
+
+void SymbolTable::listSymbols()
+{
+    std::cout << "Listing Symbols..." << std::endl;
+    for(int i = 0; i < size; i++)
+    {
+        Symbol * cur = getIndex(i);
+        std::cout << cur->name << ": " << std::endl;
+        cur->expr->print();
+    }
 }

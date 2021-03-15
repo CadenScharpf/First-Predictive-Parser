@@ -6,6 +6,7 @@
 
 #include <vector>
 #include <string>
+#include "../include/unixcolors.h"
 #pragma once
 
 class StateSet;
@@ -25,42 +26,7 @@ class State
         char second_label;//!< Input char to initiate transition to second_neighbor
         StateSet reachableBy(char p);//!< 
         void print();
-};
-/*
-typedef struct State
-{
-    State * first_neighbor;//!< Next State upon reading a first_label
-    State * second_neighbor;//!< Next State upon reading a second_label
-    char first_label;//!< Input char to initiate transition to first_neighbor
-    char second_label;//!< Input char to initiate transition to second_neighbor
-}state_t;
-*/
-
-class StateSetNode
-{
-    public:
-    State * data;
-    StateSetNode * next;
-    StateSetNode(State * d, StateSetNode * n);
-};
-
-class StateSet
-{
-    public:
-    StateSet();
-    ~StateSet();
-    int size;
-    StateSetNode * head;
-    bool push(State * s);
-    bool equals(StateSet * s);
-    bool contains(State * s);
-    bool cat(StateSet * s);
-    void print();
-    State * getIdx(int idx);
-
-    private:
-        int garbageAccumulator(StateSetNode * head);
-};
+};//end class state
 
 class REG
 {
@@ -71,15 +37,40 @@ class REG
         bool isfinal(State * state);
         StateSet reachableBy(std::string s);//!<set of all possible states
                                             //  to be in after consuming s 
+        StateSet epsilonClosure();
         bool match(std::string s);
         void print();
 
     private:
-        StateSet epsilonClosure();
         StateSet reachableNodeAccumulator(std::string s);
         StateSet reachableByOne(StateSet * states, char input);
         StateSet epsilonAccumulator(StateSet * states);
-        void printAccumulator(State * root, int depth);
+        void printAccumulator(State * root, int depth, StateSet * ss);
+}; //end class REG
 
-};  
+// StateSet:: ------------------------------
+class StateSetNode
+{
+    public:
+    State * data;
+    StateSetNode * next;
+    StateSetNode(State * d, StateSetNode * n);
+}; // end class StateSetNode
 
+class StateSet
+{
+    public:
+        StateSet();
+        //~StateSet();
+        int size;
+        StateSetNode * head;
+        bool push(State * s);
+        bool equals(StateSet * s);
+        bool contains(State * s);
+        bool cat(StateSet * s);
+        void print();
+        State * getIdx(int idx);
+
+    private:
+        int garbageAccumulator(StateSetNode * head);
+};// end class StateSet

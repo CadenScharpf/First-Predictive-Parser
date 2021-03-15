@@ -1,7 +1,6 @@
-make --dry-run --keep-going --print-directory
+make --dry-run --always-make --keep-going --print-directory
 make: Entering directory `/Users/caden_scharpf/Developer/First-Predictive-Parser'
 g++ -c -o obj/inputbuf.o src/inputbuf.cc -std=c++2a -Iinclude -g
- 
 g++ -c -o obj/lexer.o src/lexer.cc -std=c++2a -Iinclude -g
 g++ -c -o obj/REG.o src/REG.cc -std=c++2a -Iinclude -g
 g++ -c -o obj/parser.o src/parser.cc -std=c++2a -Iinclude -g

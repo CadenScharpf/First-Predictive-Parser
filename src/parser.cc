@@ -17,6 +17,22 @@
 
 using namespace std;
 
+SymbolTable token_table;
+
+// Helpers ------------
+
+void printVectorStrings(vector<string> v, string name)
+{
+    std::cout << (name + ": ") << std::endl;
+    for(int i = 0; i < v.size(); i++)
+    {
+        std::cout << v[i] << std::endl;
+    }
+    std::cout << std::endl;
+}
+
+// --------------------
+
 vector<string> tokenize(string s)
 {
     vector<string> input_tokens;
@@ -65,6 +81,8 @@ void Parser::parse_input()
     parse_tokens_section();//!< Generate REG graphs
     // Tokenizing the input text
     vector<string> input_tokens = tokenize(expect(INPUT_TEXT).lexeme);
+    printVectorStrings(input_tokens, "input_tokens");
+    token_table.listSymbols();
     vector<string> tok_types; 
     
 
@@ -76,7 +94,6 @@ void Parser::parse_input()
         {
             Symbol * symbol = token_table.getIndex(j);
             REG * reg = symbol->expr;
-            cout << reg->match(input_tokens[j]) << endl;
             if(reg->match(input_tokens[j]))
             {
                 matched = 1;
@@ -84,7 +101,7 @@ void Parser::parse_input()
                 break;
             }
         }
-        if(matched == 0){cout << "error" << endl;exit(0);}
+        if(matched == 0){cout << "error: no match" << endl;exit(0);}
     }
     for(int i = 0; i<input_tokens.size(); i++)
     {
@@ -137,14 +154,13 @@ REG * Parser::parse_expr()
 {
     REG * reg = new REG();//!< expression to be returned
 
-    Token t = lexer.GetToken();
+    Token t = lexer.GetToken();//!< consume first character
     if(t.token_type == CHAR)
     {
         reg->start = new State();//!< initialize start state
-        State * final = new State();//!< initilize final state
-        reg->start->first_neighbor = final;//!< set transition state
+        reg->final = new State();//!< initilize final state
+        reg->start->first_neighbor = reg->final;//!< set transition state
         reg->start->first_label = t.lexeme[0];//!< set the transion label
-        reg->final = final;//!< make new state final
     }
     else if(t.token_type == LPAREN)
     {
@@ -152,11 +168,7 @@ REG * Parser::parse_expr()
         expect(RPAREN);//!< consume/check for right paren
 
         Token tt = lexer.GetToken(); //!< consume manditory operator
-        if(tt.token_type == END_OF_FILE)
-        {
-            
-        }
-        else if(tt.token_type == DOT) //!< concatanation
+        if(tt.token_type == DOT) //!< concatanation
         {
             expect(LPAREN);
             REG * expression2 = parse_expr(); //!< pointer to parsed second expression
@@ -179,7 +191,11 @@ REG * Parser::parse_expr()
             reg->start->second_label = '_';//!< epsilon transritions from start
             expression1->final->first_neighbor = reg->final;//!< linking expr1 final state
             expression2->final->first_neighbor = reg->final;//!< linking expr2 final state
-            //delete expression1, expression2;//!< free the intermediary REG
+            expression1->final->first_label = '_';
+            expression2->final->first_label = '_';
+
+            delete expression1;
+            delete expression2;//!< free the intermediary REG
             expect(RPAREN);
         }
         else if(tt.token_type == STAR) //!< kleene star
@@ -187,7 +203,7 @@ REG * Parser::parse_expr()
             reg->start = new State();//!< initialize start state
             reg->final = new State();//!< inialize final state
             reg->start->first_neighbor = expression1->start;//!< linking transition to f*
-            reg->start->second_neighbor = expression1->final;//!< linking transition to f* final
+            reg->start->second_neighbor = reg->final;//!< linking transition to f* final
             reg->start->first_label = '_';//!< add epsilon transition to f*
             reg->start->second_label = '_';//add transition to accept epsilion
             expression1->final->first_neighbor = reg->final;//!< linking final state to expr2
@@ -208,13 +224,12 @@ REG * Parser::parse_expr()
     else{syntax_error();}
     return reg;
 }
-/*
+
 int main()
 {
     Parser parser;
     //parser.parse_input();
-    cout << "testign" << endl;
     REG * r = parser.parse_expr();
-    cout << r->final << endl;
+    std::cout << r->match("ff") << std::endl;
+
 }
-*/

@@ -24,6 +24,7 @@ class SymbolTable
     Symbol * root;
     REG * lookup(string name);
     bool push(string name, REG * expr);
+    void listSymbols();
     Symbol * getIndex(int idx);
     int size;
 };

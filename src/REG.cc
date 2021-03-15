@@ -30,10 +30,10 @@ void State::print()
               << first_neighbor << ", " << second_neighbor << "}" << std::endl;  
 }
 
-//StateSet::
+//StateSet:: ---------------------------------------
 StateSet::StateSet(){size = 0; head = NULL;};
 
-StateSet::~StateSet(){garbageAccumulator(head);};
+//StateSet::~StateSet(){garbageAccumulator(head);};
 
 StateSetNode::StateSetNode(State * d, StateSetNode * n){data = d; next = n;};
 
@@ -167,7 +167,6 @@ StateSet REG::reachableBy(std::string s)
 
 StateSet REG::reachableByOne(StateSet * states, char input)
 {
-    states->print();
     StateSet reachable;
     StateSetNode ** curr = &(states->head);
     while(*curr)//!< 
@@ -206,3 +205,39 @@ bool REG::match(std::string s)
         return 0; // s not accepting
     }
 }// end method match
+
+void REG::print(){StateSet * ss = new StateSet(); printAccumulator(start, 0, ss);}
+
+void REG::printAccumulator(State * s, int depth, StateSet * ss)
+{
+    using namespace std;
+    ss->push(s);
+
+    string spacer = "";
+    for(int i = depth;i>0;i--){spacer = spacer + " ";}
+    string color = isfinal(s)? RED:YELLOW;
+    cout << spacer << "State: " << color << s << RESET << endl;
+
+    if(s->first_neighbor)
+    {
+        State * n1 = s->first_neighbor;
+        string color = isfinal(n1)? RED:YELLOW;
+        cout << spacer << "Left: " << color << n1 << RESET << " upon reading "  
+             << YELLOW << s->first_label << RESET << endl;
+        if(!ss->contains(n1))
+        {
+            printAccumulator(s->first_neighbor, depth+1, ss);
+        };
+    }
+    if(s->second_neighbor)
+    {
+        State * n2 = s->second_neighbor;
+        string color = isfinal(n2)? RED:YELLOW;
+        cout << spacer << "Right: " << color << n2 << RESET << " upon reading " 
+             << YELLOW << s->second_label << RESET << endl;
+        if(!ss->contains(s->second_neighbor))
+        {
+          printAccumulator(s->second_neighbor, depth+1, ss);  
+        }
+    }
+}

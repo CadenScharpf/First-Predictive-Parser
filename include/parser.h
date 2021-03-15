@@ -13,7 +13,6 @@
 
 class Parser {
   public:
-    SymbolTable token_table;
 
     void ConsumeAllInput();
     void parse_input();
