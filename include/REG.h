@@ -26,6 +26,15 @@ class State
         StateSet reachableBy(char p);//!< 
         void print();
 };
+/*
+typedef struct State
+{
+    State * first_neighbor;//!< Next State upon reading a first_label
+    State * second_neighbor;//!< Next State upon reading a second_label
+    char first_label;//!< Input char to initiate transition to first_neighbor
+    char second_label;//!< Input char to initiate transition to second_neighbor
+}state_t;
+*/
 
 class StateSetNode
 {
@@ -61,14 +70,16 @@ class REG
         State * final;//!< final state
         bool isfinal(State * state);
         StateSet reachableBy(std::string s);//!<set of all possible states
-                                                        //  to be in after consuming s 
+                                            //  to be in after consuming s 
         bool match(std::string s);
+        void print();
 
     private:
         StateSet epsilonClosure();
         StateSet reachableNodeAccumulator(std::string s);
         StateSet reachableByOne(StateSet * states, char input);
         StateSet epsilonAccumulator(StateSet * states);
+        void printAccumulator(State * root, int depth);
 
 };  
 
