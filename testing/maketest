@@ -1,4 +1,4 @@
-IDIR=include
+IDIR=../include
 ODIR=obj
 
 CC=g++
@@ -7,18 +7,18 @@ CFLAGS= -std=c++2a -I$(IDIR) -g
 _DEPS = inputbuf.h lexer.h parser.h REG.h symbol_table.h unixcolors.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ = inputbuf.o lexer.o REG.o parser.o symbol_table.o
+_OBJ = test_runner.o inputbuf.o lexer.o REG.o parser.o symbol_table.o 
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
-$(ODIR)/%.o: src/%.cc $(DEPS)
+$(ODIR)/%.o: ../src/%.cc $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-bin/Project2: $(OBJ)
+bin/run_tests: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS)
 
 .PHONY: all
 all:
-	bin/Project2
+	run_tests
 
 .PHONY: clean
 

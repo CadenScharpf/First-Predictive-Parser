@@ -63,8 +63,6 @@ Token Parser::expect(TokenType expected_type)
 void Parser::parse_input() 
 {
     parse_tokens_section();//!< Generate REG graphs
-    Token input_text = expect(INPUT_TEXT);//!< Consume input text
-    
     // Tokenizing the input text
     vector<string> input_tokens = tokenize(expect(INPUT_TEXT).lexeme);
     vector<string> tok_types; 
@@ -78,6 +76,7 @@ void Parser::parse_input()
         {
             Symbol * symbol = token_table.getIndex(j);
             REG * reg = symbol->expr;
+            cout << reg->match(input_tokens[j]) << endl;
             if(reg->match(input_tokens[j]))
             {
                 matched = 1;
@@ -91,6 +90,7 @@ void Parser::parse_input()
     {
         cout << input_tokens[i] << ":" << tok_types[i]; 
     }
+    
 }
 /**
  * @brief Parse the tokens section
@@ -208,10 +208,13 @@ REG * Parser::parse_expr()
     else{syntax_error();}
     return reg;
 }
-
+/*
 int main()
 {
     Parser parser;
-    parser.parse_input();
-
+    //parser.parse_input();
+    cout << "testign" << endl;
+    REG * r = parser.parse_expr();
+    cout << r->final << endl;
 }
+*/
