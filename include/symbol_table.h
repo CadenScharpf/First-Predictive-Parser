@@ -11,10 +11,11 @@ using namespace::std;
 class Symbol
 {
     public:
-    Symbol(string newName, REG * newExpr);
+    Symbol(string newName, REG * newExpr, int piority);
     string name;
     REG * expr;
     Symbol * next;
+    int priority;
 };
 
 class SymbolTable

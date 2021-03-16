@@ -106,6 +106,13 @@ void StateSet::print()
     }
 }
 
+void StateSet::reset()
+{
+    garbageAccumulator(head);
+    head = NULL;
+    size = 0;
+}
+
 State * StateSet::getIdx(int idx)
 {
     if(idx > size -1){return NULL;}
@@ -113,6 +120,8 @@ State * StateSet::getIdx(int idx)
     for(int i = idx; i > 0; i--){current = & (*current)->next;}
     return (*current)->data;
 }
+
+bool StateSet::isEmpty(){ if(size==0) {return 1;} else{return 0;}}
 
 //REG:: ---------------------------------------
 REG::REG()
@@ -134,11 +143,8 @@ StateSet REG::epsilonAccumulator(StateSet * states)
      }
      if(reachable.equals(states))
      {
-        if(reachable.contains(final))
-        {
-             std::cout << "epsilon is nooooOOOoot a token\n";
-             exit(1);
-        }
+        /*
+        */
         return reachable;
      }
      else
@@ -151,7 +157,15 @@ StateSet REG::epsilonClosure()
 {
     StateSet s = start->reachableBy('_');
     s.push(start);
-    return epsilonAccumulator(&s);
+    StateSet buff = epsilonAccumulator(&s);
+    /*
+    if(buff.contains(final))
+    {
+        std::cout << "epsilon is nooooOOOoot a token\n";
+        exit(1);
+    }
+    */
+    return buff;
 }
 
 bool REG::isfinal(State * state)
@@ -162,11 +176,14 @@ bool REG::isfinal(State * state)
 
 StateSet REG::reachableBy(std::string s)
 {
-    return reachableNodeAccumulator(s);
+    StateSet ss = reachableNodeAccumulator(s);
+    ss.print();
+    return ss;
 }
 
 StateSet REG::reachableByOne(StateSet * states, char input)
 {
+    // 1. Locate all nodes that can be reached directly from s by consuming c
     StateSet reachable;
     StateSetNode ** curr = &(states->head);
     while(*curr)//!< 
@@ -176,7 +193,11 @@ StateSet REG::reachableByOne(StateSet * states, char input)
         reachable.cat(&s);
         curr = & (*curr)->next;
     }
-    return reachable;
+    if(reachable.isEmpty()) {return reachable;};
+
+    // 2. Find all nodes that can be reached from the resulting set 'reachable by consuming no input
+    return epsilonAccumulator(&reachable);
+
 }
 
 StateSet REG::reachableNodeAccumulator(std::string s)
@@ -188,7 +209,6 @@ StateSet REG::reachableNodeAccumulator(std::string s)
     else
     {
         StateSet r =  reachableNodeAccumulator(s.substr(1));
-        //
         return reachableByOne(&r, s[0]);
     }
 }
@@ -205,6 +225,7 @@ bool REG::match(std::string s)
         return 0; // s not accepting
     }
 }// end method match
+
 
 void REG::print(){StateSet * ss = new StateSet(); printAccumulator(start, 0, ss);}
 

@@ -14,6 +14,7 @@
 #include <sstream>
 #include <string.h>
 #include <vector>
+#include "../include/my_LexicalAnalyzer.h"
 
 using namespace std;
 
@@ -30,8 +31,6 @@ void printVectorStrings(vector<string> v, string name)
     }
     std::cout << std::endl;
 }
-
-// --------------------
 
 vector<string> tokenize(string s)
 {
@@ -70,8 +69,7 @@ Token Parser::expect(TokenType expected_type)
     return t;
 }
 
-
-// Parsing
+// Parsing ------------
 /**
  * @brief Parse program input
  * 
@@ -79,35 +77,28 @@ Token Parser::expect(TokenType expected_type)
 void Parser::parse_input() 
 {
     parse_tokens_section();//!< Generate REG graphs
-    // Tokenizing the input text
-    vector<string> input_tokens = tokenize(expect(INPUT_TEXT).lexeme);
-    printVectorStrings(input_tokens, "input_tokens");
-    token_table.listSymbols();
-    vector<string> tok_types; 
-    
-
-    for(int i = 0 ;i < input_tokens.size(); i++)//!< loop over input strings
-    {   
-        bool matched = 0;
-        string token = input_tokens[i];
-        for(int j = 0;j < token_table.size; j++)//!< loop over REG graphs(symbols)
-        {
-            Symbol * symbol = token_table.getIndex(j);
-            REG * reg = symbol->expr;
-            if(reg->match(input_tokens[j]))
-            {
-                matched = 1;
-                tok_types.push_back(symbol->name);
-                break;
-            }
-        }
-        if(matched == 0){cout << "error: no match" << endl;exit(0);}
-    }
-    for(int i = 0; i<input_tokens.size(); i++)
+    //rest of parser here call myGETTOKEN until it returns eof;
+   // string it = expect(INPUT_TEXT).lexeme;
+    //my_LexicalAnalyzer myLexer(token_table, it);
+    //token_t token = myLexer.my_GetToken();
+    //cout << token.lexeme << endl;
+    vector<string> bad;
+    for(int i = 0; i < token_table.size; i++)
     {
-        cout << input_tokens[i] << ":" << tok_types[i]; 
+        if((token_table.getIndex(i)->expr->epsilonClosure()).contains(token_table.getIndex(i)->expr->final))
+        {
+            bad.push_back(token_table.getIndex(i)->name);
+        }
+        if(bad.size() != 0)
+        {
+            cout << "EPSILON IS NOOOOOT A TOKEN !!! ";
+            for(int i = 0; i < bad.size(); i++ )
+            {
+                cout << bad[i] << " ";
+            }
+            cout << endl;
+        }
     }
-    
 }
 /**
  * @brief Parse the tokens section
@@ -225,11 +216,10 @@ REG * Parser::parse_expr()
     return reg;
 }
 
+
+
 int main()
 {
     Parser parser;
-    //parser.parse_input();
-    REG * r = parser.parse_expr();
-    std::cout << r->match("ff") << std::endl;
-
+    parser.parse_input();
 }

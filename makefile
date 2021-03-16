@@ -1,10 +1,10 @@
 IDIR=include
 ODIR=obj
 
-CC=g++
+CC=clang++
 CFLAGS= -std=c++2a -I$(IDIR) -g
 
-_DEPS = inputbuf.h lexer.h parser.h REG.h symbol_table.h unixcolors.h
+_DEPS = inputbuf.h lexer.h parser.h REG.h symbol_table.h unixcolors.h my_LexicalAnalyzer.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
 _OBJ = inputbuf.o lexer.o REG.o parser.o symbol_table.o

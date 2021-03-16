@@ -7,7 +7,7 @@
 #include "../include/symbol_table.h"
 
 
-Symbol::Symbol(string newName, REG * newExpr)
+Symbol::Symbol(string newName, REG * newExpr, int priority)
 {
     name = newName;
     expr = newExpr;
@@ -52,7 +52,7 @@ REG * SymbolTable::lookup(string name)
  */
 bool SymbolTable::push(string name, REG * expr)
 {
-    Symbol * newSymbol = new (nothrow) Symbol(name, expr);
+    Symbol * newSymbol = new (nothrow) Symbol(name, expr, size);
     if(newSymbol == 0)
     {
         cout << "ERROR: Failed to alocate space for a new symbol" << endl;

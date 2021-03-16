@@ -68,7 +68,9 @@ class StateSet
         bool equals(StateSet * s);
         bool contains(State * s);
         bool cat(StateSet * s);
+        bool isEmpty();
         void print();
+        void reset();
         State * getIdx(int idx);
 
     private:
