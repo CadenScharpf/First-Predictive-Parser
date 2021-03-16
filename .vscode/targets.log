@@ -8,7 +8,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This program built for i386-apple-darwin11.3.0
  
 
-# Make data base, printed on Mon Mar 15 22:27:04 2021
+# Make data base, printed on Mon Mar 15 23:16:06 2021
 
 # Variables
 
@@ -89,15 +89,16 @@ MAKECMDGOALS := all
 # environment
 SHLVL = 1
 # makefile (from `makefile', line 4)
-CC = clang++
+CC = g++
 # makefile (from `makefile', line 2)
 ODIR = obj
 # default
 MAKE_VERSION := 3.81
 # environment
 USER = caden_scharpf
+ 
 # makefile
-.DEFAULT_GOAL := bin/Project2
+.DEFAULT_GOAL := a.out
 # automatic
 %D = $(patsubst %/,%,$(dir $%))
 # default
@@ -110,7 +111,6 @@ TMPDIR = /var/folders/qr/tp95pgnd2yd1gwknrsy_sdmr0000gn/T/
 *F = $(notdir $*)
 # environment
 VSCODE_IPC_HOOK = /Users/caden_scharpf/Library/Application Support/Code/1.54.2-main.sock
- 
 # makefile
 MAKEFLAGS = Rrqp
 # environment
@@ -152,9 +152,9 @@ VSCODE_PID = 24765
 
 # Directories
 
-# . (device 16777220, inode 12891544192): 15 files, no impossibilities.
+# . (device 16777220, inode 12891544192): 19 files, no impossibilities.
 
-# 15 files, no impossibilities in 1 directories.
+# 19 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -235,13 +235,13 @@ obj/lexer.o:
 # Not a target:
 makefile:
 #  Implicit rule search has been done.
-#  Last modified 2021-03-15 22:26:08
+#  Last modified 2021-03-15 22:56:09
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
 # Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 
-bin/Project2: obj/inputbuf.o obj/lexer.o obj/REG.o obj/parser.o obj/symbol_table.o
+a.out: obj/inputbuf.o obj/lexer.o obj/REG.o obj/parser.o obj/symbol_table.o
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -268,7 +268,6 @@ clean:
 obj/REG.o:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
- 
 #  File has not been updated.
 
 # files hash-table stats:
@@ -284,6 +283,6 @@ obj/REG.o:
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Mon Mar 15 22:27:04 2021
+# Finished Make data base on Mon Mar 15 23:16:06 2021
 
  

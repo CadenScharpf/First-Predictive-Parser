@@ -1,6 +1,5 @@
 make --dry-run --keep-going --print-directory
 make: Entering directory `/Users/caden_scharpf/Developer/First-Predictive-Parser'
-make: `bin/Project2' is up to date.
- 
+make: `a.out' is up to date.
 make: Leaving directory `/Users/caden_scharpf/Developer/First-Predictive-Parser'
  

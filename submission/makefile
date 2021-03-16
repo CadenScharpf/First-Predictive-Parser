@@ -1,8 +1,8 @@
-IDIR=include
-ODIR=obj
+IDIR=./
+ODIR=./
 
-CC=clang++
-CFLAGS= -std=c++2a -I$(IDIR) -g
+CC=gcc
+CFLAGS= -std=c++2a -I$(IDIR) 
 
 _DEPS = inputbuf.h lexer.h parser.h REG.h symbol_table.h unixcolors.h my_LexicalAnalyzer.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
@@ -10,15 +10,15 @@ DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 _OBJ = inputbuf.o lexer.o REG.o parser.o symbol_table.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
-$(ODIR)/%.o: src/%.cc $(DEPS)
+$(ODIR)/%.o: ./%.cc $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-bin/Project2: $(OBJ)
+a.out: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS)
 
 .PHONY: all
 all:
-	bin/Project2
+	a.out
 
 .PHONY: clean
 
