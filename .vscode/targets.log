@@ -7,8 +7,10 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 
 # This program built for i386-apple-darwin11.3.0
  
+make: *** No rule to make target `all'.  Stop.
+ 
 
-# Make data base, printed on Mon Mar 15 23:16:06 2021
+# Make data base, printed on Mon Mar 15 23:33:41 2021
 
 # Variables
 
@@ -16,8 +18,6 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 <D = $(patsubst %/,%,$(dir $<))
 # automatic
 ?F = $(notdir $?)
-# makefile (from `makefile', line 11)
-OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 # environment
 VSCODE_LOG_NATIVE = false
 # automatic
@@ -34,10 +34,8 @@ SHELL = /bin/sh
 VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
 # environment
 _ = /usr/bin/make
-# makefile (from `makefile', line 5)
-CFLAGS = -std=c++2a -I$(IDIR) -g
-# makefile (from `makefile', line 1)
-MAKEFILE_LIST :=  makefile
+# makefile
+MAKEFILE_LIST := 
 # environment
 VSCODE_NODE_CACHED_DATA_DIR = /Users/caden_scharpf/Library/Application Support/Code/CachedData/fd6f3bce6709b121a895d042d343d71f317d74e7
 # environment
@@ -56,8 +54,6 @@ ELECTRON_RUN_AS_NODE = 1
 SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.3TjfHB4HAE/Listeners
 # automatic
 %F = $(notdir $%)
-# makefile (from `makefile', line 7)
-_DEPS = inputbuf.h lexer.h parser.h REG.h symbol_table.h unixcolors.h my_LexicalAnalyzer.h
 # environment
 VSCODE_PIPE_LOGGING = true
 # environment
@@ -74,8 +70,6 @@ MAKEFILEPATH := /Applications/Xcode.app/Contents/Developer/Makefiles
 LOGNAME = caden_scharpf
 # environment
 APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
-# makefile (from `makefile', line 1)
-IDIR = include
 # environment
 VSCODE_HANDLES_UNCAUGHT_ERRORS = true
 # automatic
@@ -88,17 +82,12 @@ MAKE = $(MAKE_COMMAND)
 MAKECMDGOALS := all
 # environment
 SHLVL = 1
-# makefile (from `makefile', line 4)
-CC = g++
-# makefile (from `makefile', line 2)
-ODIR = obj
 # default
 MAKE_VERSION := 3.81
 # environment
 USER = caden_scharpf
- 
 # makefile
-.DEFAULT_GOAL := a.out
+.DEFAULT_GOAL := 
 # automatic
 %D = $(patsubst %/,%,$(dir $%))
 # default
@@ -131,10 +120,6 @@ MAKEFILES :=
 <F = $(notdir $<)
 # automatic
 ^F = $(notdir $^)
-# makefile (from `makefile', line 10)
-_OBJ = inputbuf.o lexer.o REG.o parser.o symbol_table.o
-# makefile (from `makefile', line 8)
-DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 # default
 SUFFIXES := 
 # default
@@ -144,7 +129,7 @@ MAKELEVEL := 0
 # environment
 VSCODE_PID = 24765
 # variable set hash-table stats:
-# Load=65/1024=6%, Rehash=0, Collisions=5/98=5%
+# Load=57/1024=6%, Rehash=0, Collisions=1/78=1%
 
 # Pattern-specific Variable Values
 
@@ -158,55 +143,18 @@ VSCODE_PID = 24765
 
 # Implicit Rules
 
-obj/%.o: src/%.cc include/inputbuf.h include/lexer.h include/parser.h include/REG.h include/symbol_table.h include/unixcolors.h include/my_LexicalAnalyzer.h
-#  commands to execute (from `makefile', line 14):
-	$(CC) -c -o $@ $< $(CFLAGS)
-	
-
-# 1 implicit rules, 0 (0.0%) terminal.
+# No implicit rules.
 
 # Files
 
 # Not a target:
-obj/parser.o:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-
 all:
-#  Phony target (prerequisite of .PHONY).
 #  Command-line target.
-#  Implicit rule search has not been done.
-#  Implicit/static pattern stem: `'
+#  Implicit rule search has been done.
 #  File does not exist.
-#  File has been updated.
-#  Needs to be updated (-q is set).
-# automatic
-# @ := all
-# automatic
-# % := 
-# automatic
-# * := 
-# automatic
-# + := 
-# automatic
-# | := 
-# automatic
-# < := 
-# automatic
-# ^ := 
-# automatic
-# ? := 
-# variable set hash-table stats:
-# Load=8/32=25%, Rehash=0, Collisions=1/10=10%
-#  commands to execute (from `makefile', line 21):
-	bin/Project2
-	
-
-.PHONY: all clean
-#  Implicit rule search has not been done.
-#  Modification time never checked.
 #  File has not been updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 
 # Not a target:
 .SUFFIXES:
@@ -215,39 +163,24 @@ all:
 #  File has not been updated.
 
 # Not a target:
-obj/symbol_table.o:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-
-# Not a target:
-obj/inputbuf.o:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-
-# Not a target:
-obj/lexer.o:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-
-# Not a target:
-makefile:
+Makefile:
+#  A default, MAKEFILES, or -include/sinclude makefile.
 #  Implicit rule search has been done.
-#  Last modified 2021-03-15 22:56:09
+#  File does not exist.
 #  File has been updated.
-#  Successfully updated.
+#  Failed to be updated.
 # variable set hash-table stats:
 # Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 
-a.out: obj/inputbuf.o obj/lexer.o obj/REG.o obj/parser.o obj/symbol_table.o
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  commands to execute (from `makefile', line 17):
-	$(CC) -o $@ $^ $(CFLAGS)
-	
+# Not a target:
+makefile:
+#  A default, MAKEFILES, or -include/sinclude makefile.
+#  Implicit rule search has been done.
+#  File does not exist.
+#  File has been updated.
+#  Failed to be updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 
 # Not a target:
 .DEFAULT:
@@ -255,34 +188,29 @@ a.out: obj/inputbuf.o obj/lexer.o obj/REG.o obj/parser.o obj/symbol_table.o
 #  Modification time never checked.
 #  File has not been updated.
 
-clean:
-#  Phony target (prerequisite of .PHONY).
-#  Implicit rule search has not been done.
-#  File does not exist.
-#  File has not been updated.
-#  commands to execute (from `makefile', line 26):
-	rm -f $(ODIR)/*.o *~ core $(INCDIR)/*~ 
-	
-
 # Not a target:
-obj/REG.o:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
+GNUmakefile:
+#  A default, MAKEFILES, or -include/sinclude makefile.
+#  Implicit rule search has been done.
+#  File does not exist.
+#  File has been updated.
+#  Failed to be updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 
 # files hash-table stats:
-# Load=12/1024=1%, Rehash=0, Collisions=1/34=3%
+# Load=6/1024=1%, Rehash=0, Collisions=0/17=0%
 # VPATH Search Paths
 
 # No `vpath' search paths.
 
 # No general (`VPATH' variable) search path.
 
-# # of strings in strcache: 1
-# # of strcache buffers: 1
-# strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
-# strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
+# # of strings in strcache: 0
+# # of strcache buffers: 0
+# strcache size: total = 0 / max = 0 / min = 4096 / avg = 0
+# strcache free: total = 0 / max = 0 / min = 4096 / avg = 0
 
-# Finished Make data base on Mon Mar 15 23:16:06 2021
+# Finished Make data base on Mon Mar 15 23:33:41 2021
 
  

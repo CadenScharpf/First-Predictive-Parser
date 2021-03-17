@@ -8,7 +8,7 @@
 
 #include <string>
 #include "lexer.h"
-#include "REG.h"
+#include "./REG.h"
 #include "symbol_table.h"
 
 class Parser {

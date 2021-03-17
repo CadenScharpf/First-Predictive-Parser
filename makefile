@@ -1,5 +1,5 @@
-IDIR=./
-ODIR=./
+IDIR=include
+ODIR=onj
 
 CC=gcc
 CFLAGS= -std=c++2a -I$(IDIR) 
@@ -10,15 +10,15 @@ DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 _OBJ = inputbuf.o lexer.o REG.o parser.o symbol_table.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
-$(ODIR)/%.o: ./%.cc $(DEPS)
+$(ODIR)/%.o: src/%.cc $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-a.out: $(OBJ)
+bin/Parser: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS)
 
 .PHONY: all
 all:
-	a.out
+	bin/parser
 
 .PHONY: clean
 

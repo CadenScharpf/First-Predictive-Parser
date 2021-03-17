@@ -9,8 +9,8 @@
 #include <string>
 #include <cctype>
 
-#include "../include/lexer.h"
-#include "../include/inputbuf.h"
+#include "lexer.h"
+#include "inputbuf.h"
 
 using namespace std;
 

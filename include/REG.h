@@ -6,7 +6,7 @@
 
 #include <vector>
 #include <string>
-#include "../include/unixcolors.h"
+#include "unixcolors.h"
 #pragma once
 
 class StateSet;

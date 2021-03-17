@@ -4,7 +4,7 @@
  */
 
 #include <iostream>
-#include "../include/symbol_table.h"
+#include "symbol_table.h"
 
 
 Symbol::Symbol(string newName, REG * newExpr, int priority)

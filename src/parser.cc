@@ -9,12 +9,12 @@
  */
 #include <iostream>
 #include <cstdlib>
-#include "../include/parser.h"
-#include "../include/symbol_table.h"
+#include "parser.h"
+#include "symbol_table.h"
 #include <sstream>
 #include <string.h>
 #include <vector>
-#include "../include/my_LexicalAnalyzer.h"
+#include "my_LexicalAnalyzer.h"
 
 using namespace std;
 

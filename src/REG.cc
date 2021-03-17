@@ -3,7 +3,7 @@
  *
  * Do not share this file with anyone
  */
-#include "../include/REG.h"
+#include "REG.h"
 #include <iostream>
 
 

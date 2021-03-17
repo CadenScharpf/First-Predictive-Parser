@@ -10,7 +10,7 @@
 #include <string>
 #include <cstdio>
 
-#include "../include/inputbuf.h"
+#include "inputbuf.h"
 
 using namespace std;
 
