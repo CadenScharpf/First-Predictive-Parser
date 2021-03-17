@@ -1,6 +1,8 @@
 # Lexing with Non-Deterministic Automata
 
-This simple program automatically implements a lexical analyzer for any list of tokens which are specified using regular expressions.  The input has two parts:
+This simple program automatically implements a lexical analyzer for any list of tokens which are specified using regular expressions. At the core of this program, the McNaughton–Yamada–Thompson algorithm is implimented in order to generate NFA's for each specifies regular expression.
+
+The input has two parts:
 
 1. The first part of the input is a list of tokens separated by commas and terminated with the # (hash) symbol.  Each token in the list consists of a token name and a token description. The token description is a regular expression for the token. The list is of the following form:
 
